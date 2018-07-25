@@ -13,7 +13,7 @@ shinyServer(function(input,output,session){
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value123())
   })
   output$mytable <- renderDataTable(
-    machine_data[,-2]
+    machine_data[,1,3,4,5,6,9,10,11]
     # options = list(pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {

@@ -26,9 +26,12 @@ tracking_asset <- function(filterName){
   blah <- filter(new,new$Model==filterName)
   
   p <- plot_geo(blah, lat = ~latitude, lon = ~longitude) %>%
-    layout(geo = g) %>%
     add_markers(
       text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
+    ) %>%
+    layout(
+      title = ~paste("Location of ",filterName),
+      geo = g
     )
   return(p)
 }

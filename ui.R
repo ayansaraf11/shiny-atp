@@ -6,7 +6,7 @@ library(shinyjs)
 
 jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
 dashboardPage(skin = "blue",
-  dashboardHeader(title = "iDX AMP"),
+  dashboardHeader(title = "iDX ATP"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Home", tabName = "home", icon = icon("dashboard")),
