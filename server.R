@@ -10,7 +10,7 @@ shinyServer(function(input,output,session){
   output$machine_name <- renderUI({
     filter.name.bycompany <- filter(machine_data,Company==input$company)
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
-    selectInput("name","Name of Machine",choices= unique(filter.name$Name),selected = value123())
+    selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value123())
   })
   output$mytable <- renderDataTable(
     machine_data[,-2]
@@ -51,6 +51,9 @@ shinyServer(function(input,output,session){
   
   output$track_asset_plot <- renderPlotly({
     tracking_asset(input$select_asset)
+  })
+  output$track_asset_table <- renderDataTable({
+    blop <- filter(machine_data,machine_data$Model==input$select_asset)[,-2]
   })
   
   dataReactive <- reactive({

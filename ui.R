@@ -53,10 +53,13 @@ dashboardPage(skin = "blue",
     tabItem("view",
             dataTableOutput("mytable")),
     tabItem("track",
+              sidebarPanel(
               selectInput("select_asset","Choose Machine to Track",
                           choices = unique(machine_data$Model),
-                           selected = unique(machine_data$Model[1])),
-            plotlyOutput("track_asset_plot"))
+                           selected = unique(machine_data$Model[1]))),
+              mainPanel(
+             plotlyOutput("track_asset_plot"),
+             dataTableOutput("track_asset_table")))
   )
 ))
 
