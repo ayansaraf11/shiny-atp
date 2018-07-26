@@ -1,10 +1,10 @@
 library(zipcode)
 library(tidyr)
 library(plotly)
+library(digest)
 library(dplyr)
 data(zipcode)
 
-machine_data <- read.csv("mockdata.csv", stringsAsFactors = F)
 zipcode %>% mutate(zip = readr::parse_number(zip))
 
 zipcode$zip <- as.numeric(zipcode$zip)
@@ -35,3 +35,13 @@ tracking_asset <- function(filterName){
     )
   return(p)
 }
+
+ 
+#  xyz <- read.csv("mockdata.csv",stringsAsFactors = F)
+# xyz$MD5.Hash.Values <- NULL
+#  
+#  for(i in 1:nrow(xyz)){
+#    text <- xyz$UID[i]
+#    hash <- digest(text, algo="md5",serialize = F)
+#    xyz$MD5.Hash[i] <- hash
+#  }

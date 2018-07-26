@@ -3,17 +3,18 @@ library(dplyr)
 library(shinyjs)
 library(V8)
 source("mapping.R")
+source("pricing.r")
 shinyServer(function(input,output,session){
-  colnames(machine_data) <- c("UID" ,"MD5 Hash Values","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
-                              "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit")
-  value123 <- reactiveVal("Signa EXCITE 3.0T")
+  colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
+                              "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
+  value123 <- reactiveVal("Lightspeed 16")
   output$machine_name <- renderUI({
-    filter.name.bycompany <- filter(machine_data,Company==input$company)
+    filter.name.bycompany <- filter(metaTable,Company==input$company)
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value123())
   })
   output$mytable <- renderDataTable(
-    machine_data[,c(1,3,4,5,6,9,10,11)]
+    metaTable
     # options = list(pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
@@ -34,19 +35,19 @@ shinyServer(function(input,output,session){
   
   
   output$machineCount <- renderValueBox({
-    valueBox(length(unique(machine_data$Model)), "Machines in the Inventory", icon = icon("list"), color = "blue")
+    valueBox(length(unique(metaTable$Model)), "Machines in the Inventory", icon = icon("list"), color = "blue")
   })
   
   output$totalValue <- renderValueBox({
-    valueBox(paste0("$",sum(machine_data$Purchase_Price)),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
+    valueBox(paste0("$",sum(metaTable$Purchase_Price)),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
-    valueBox(paste0("$",floor(sum(machine_data$Purchase_Price)/length(machine_data$Model))),"Average Value of Listing",icon = icon("dollar"),color = "green")
+    valueBox(paste0("$",floor(sum(metaTable$Purchase_Price)/length(metaTable$Model))),"Average Value of Listing",icon = icon("dollar"),color = "green")
   })
   
   output$oemplot <- renderPlot({
-    barplot(table(machine_data$Company),horiz = TRUE, col = "skyblue",main = "Variety of OEMs in AMP")
+    barplot(table(metaTable$Company),horiz = TRUE, col = "skyblue",main = "Variety of OEMs in AMP")
   })
   
   output$track_asset_plot <- renderPlotly({
@@ -62,8 +63,9 @@ shinyServer(function(input,output,session){
                Coil_Thickness = c(input$thickness))
   })
   observeEvent(input$submit, {
-    metaTable <- rbind(machine_data,dataReactive())
-    write.csv(metaTable,"mockdata.csv",row.names = F,na = "")
-    js$reset()
+    print(pricing(input$company,input$name))
+    # metaTable <- rbind(machine_data,dataReactive())
+    # write.csv(metaTable,"mockdata.csv",row.names = F,na = "")
+    # js$reset()
   })
 })

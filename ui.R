@@ -47,7 +47,7 @@ dashboardPage(skin = "blue",
               hidden(selectInput("state","Location State",choices = state.name,selected = state.name[which(state.name==machine_data[which(machine_data$Name==value1),"State"])])),
               hidden(textInput("pwl","Patient Weight Limit (lbs)",value = machine_data[which(machine_data$Name==value1),"Patient_Weight_Limit"])),
               hidden(textInput("thickness","Coil Thickness (mm)",value = machine_data[which(machine_data$Name==value1),"Coil_Thickness"])),
-              extendShinyjs(text = jsResetCode),
+             # extendShinyjs(text = jsResetCode),
               hidden(actionButton("submit","Add to Inventory"))
               )),
     tabItem("view",
@@ -59,7 +59,7 @@ dashboardPage(skin = "blue",
                            selected = unique(machine_data$Model[1]))),
               mainPanel(
              plotlyOutput("track_asset_plot"),
-             dataTableOutput("track_asset_table")))
+             box(title = "Asset History", width = "auto",status = "primary", height = "auto",solidHeader = T,scrollX = T, dataTableOutput("track_asset_table"))))
   )
 ))
 
