@@ -1,7 +1,3 @@
-library(shiny)
-library(dplyr)
-library(shinyjs)
-library(V8)
 source("mapping.R")
 source("pricing.r")
 shinyServer(function(input,output,session){

@@ -1,9 +1,3 @@
-library(shinydashboard)
-library(shinythemes)
-library(DT)
-library(plotly)
-library(shinyjs)
-
 jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
 dashboardPage(skin = "blue",
   dashboardHeader(title = "iDX ATP"),
@@ -24,7 +18,7 @@ dashboardPage(skin = "blue",
               valueBoxOutput("averageValue")),
               fluidRow(
                 box(status = "primary", plotOutput("oemplot")),
-                box(status = "primary", plotlyOutput("allAsset"))
+                box(status = "success", plotlyOutput("allAsset"))
               )),
     tabItem(tabName = "add",
             sidebarPanel(

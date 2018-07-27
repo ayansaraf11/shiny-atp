@@ -1,8 +1,5 @@
-library(zipcode)
-library(tidyr)
-library(plotly)
-library(digest)
-library(dplyr)
+
+
 data(zipcode)
 
 zipcode %>% mutate(zip = readr::parse_number(zip))
