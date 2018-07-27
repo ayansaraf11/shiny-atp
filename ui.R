@@ -23,7 +23,8 @@ dashboardPage(skin = "blue",
               valueBoxOutput("totalValue"),
               valueBoxOutput("averageValue")),
               fluidRow(
-                box(plotOutput("oemplot"))
+                box(status = "primary", plotOutput("oemplot")),
+                box(status = "primary", plotlyOutput("allAsset"))
               )),
     tabItem(tabName = "add",
             sidebarPanel(
@@ -60,7 +61,7 @@ dashboardPage(skin = "blue",
               hidden(actionButton("price","Price Analysis")),
              hidden(actionButton("submit","Add to Inventory")),
              br(),
-             dataTableOutput("priceTable"),
+              dataTableOutput("priceTable"),
              br(),
              plotlyOutput("price_plot")
               )),
@@ -72,9 +73,10 @@ dashboardPage(skin = "blue",
                           choices = unique(machine_data$Model),
                            selected = unique(machine_data$Model[1]))),
               mainPanel(
-             plotlyOutput("track_asset_plot"),
+                box(title = "Asset Map", width = "auto",status = "primary", height = "auto",
+                    solidHeader = T,plotlyOutput("track_asset_plot")),
              box(title = "Asset History", width = "auto",status = "primary", height = "auto",
-                 solidHeader = T,scrollX = T, dataTableOutput("track_asset_table"))))
+                 solidHeader = T, dataTableOutput("track_asset_table"))))
   )
 ))
 

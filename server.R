@@ -54,8 +54,13 @@ shinyServer(function(input,output,session){
   output$track_asset_plot <- renderPlotly({
     tracking_asset(input$select_asset)
   })
+  
+  output$allAsset <- renderPlotly({
+    allMachines()
+  })
   output$track_asset_table <- renderDataTable({
-    blop <- filter(machine_data,machine_data$Model==input$select_asset)[,-2]
+    asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,Company,Type,Model,Purchase_Price)
+    datatable(asset_history_table,options = list(dom = 't'))
   })
   
   dataReactive <- reactive({
@@ -88,8 +93,4 @@ shinyServer(function(input,output,session){
     })
   })
   
-  # output$test01 <- renderPlot({
-  #   if (is.null(v$data)) return()
-  #   price.plot(input$company,input$name)
-  # })
 })

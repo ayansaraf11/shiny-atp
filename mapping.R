@@ -16,7 +16,7 @@ tracking_asset <- function(filterName){
     scope = 'usa',
     projection = list(type = 'albers usa'),
     showland = TRUE,
-    landcolor = toRGB("gray95"),
+    landcolor = toRGB("gray75"),
     subunitcolor = toRGB("gray85"),
     countrycolor = toRGB("gray85"),
     countrywidth = 0.5,
@@ -31,7 +31,8 @@ tracking_asset <- function(filterName){
     ) %>%
     layout(
       title = ~paste("Location of ",filterName),
-      geo = g
+      geo = g,
+      autosize = T
     )
   return(p)
 }
@@ -45,3 +46,26 @@ tracking_asset <- function(filterName){
 #    hash <- digest(text, algo="md5",serialize = F)
 #    xyz$MD5.Hash[i] <- hash
 #  }
+allMachines <- function(){
+  g <- list(
+    scope = 'usa',
+    projection = list(type = 'albers usa'),
+    showland = TRUE,
+    landcolor = toRGB("gray75"),
+    subunitcolor = toRGB("gray85"),
+    countrycolor = toRGB("gray85"),
+    countrywidth = 0.5,
+    subunitwidth = 0.5
+  )
+  
+  p <- plot_geo(new, lat = ~latitude, lon = ~longitude) %>%
+    add_markers(
+      text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
+    ) %>%
+    layout(
+      title = ~paste("Location of all machines"),
+      geo = g,
+      autosize = T
+    )
+  return(p)
+}
