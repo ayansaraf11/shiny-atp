@@ -41,14 +41,26 @@ dashboardPage(skin = "blue",
             mainPanel(
               uiOutput("ui"),
               useShinyjs(),
-              hidden(textInput("purchase_price","Purchase Price",value = machine_data[which(machine_data$Name==value1),"Purchase_Price"])),
-              hidden(textInput("service","Service record",value = machine_data[which(machine_data$Name==value1),"Number_of_services"])),
-              hidden(textInput("city","Location City",value = machine_data[which(machine_data$Name==value1),"City"])),
-              hidden(selectInput("state","Location State",choices = state.name,selected = state.name[which(state.name==machine_data[which(machine_data$Name==value1),"State"])])),
-              hidden(textInput("pwl","Patient Weight Limit (lbs)",value = machine_data[which(machine_data$Name==value1),"Patient_Weight_Limit"])),
-              hidden(textInput("thickness","Coil Thickness (mm)",value = machine_data[which(machine_data$Name==value1),"Coil_Thickness"])),
+              fluidRow(
+                column(6,
+              hidden(textInput("purchase_price","Purchase Price",value = machine_data[which(machine_data$Model==value1),"Purchase_Price"]))),
+                column(6,
+              hidden(textInput("service","Service record",value = machine_data[which(machine_data$Model==value1),"Number_of_services"])))),
+              fluidRow(
+                column(6,
+              hidden(textInput("city","Location City",value = machine_data[which(machine_data$Model==value1),"City"]))),
+                column(6,
+              hidden(selectInput("state","Location State",choices = state.name,selected = state.name[which(state.name==machine_data[which(machine_data$Model==value1),"State"])])))),
+              fluidRow(
+                column(6,
+              hidden(textInput("pwl","Patient Weight Limit (lbs)",value = machine_data[which(machine_data$Model==value1),"Patient_Weight_Limit"]))),
+                column(6,
+              hidden(textInput("thickness","Coil Thickness (mm)",value = machine_data[which(machine_data$Model==value1),"Coil_Thickness"])))),
              # extendShinyjs(text = jsResetCode),
-              hidden(actionButton("submit","Add to Inventory"))
+              hidden(actionButton("price","Price Analysis")),
+             hidden(actionButton("submit","Add to Inventory")),
+             br(),
+             plotlyOutput("price_plot")
               )),
     tabItem("view",
             dataTableOutput("mytable")),

@@ -8,6 +8,7 @@ shinyServer(function(input,output,session){
   colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
                               "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
   value123 <- reactiveVal("Lightspeed 16")
+  v <- reactiveValues(data = NULL)
   output$machine_name <- renderUI({
     filter.name.bycompany <- filter(metaTable,Company==input$company)
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
@@ -31,6 +32,7 @@ shinyServer(function(input,output,session){
     show("pwl")
     show("thickness")
     show("submit")
+    show("price")
   })
   
   
@@ -62,10 +64,21 @@ shinyServer(function(input,output,session){
                Number_of_services = c(input$service),City = c(input$city),State = c(input$state),Patient_Weight_Limit = c(input$pwl),
                Coil_Thickness = c(input$thickness))
   })
-  observeEvent(input$submit, {
-    print(pricing(input$company,input$name))
+  observeEvent(input$price, {
+    plotReactive()
+    #price.plot(input$company,input$name)
+    #print(pricing.for.average(input$company,input$name))
     # metaTable <- rbind(machine_data,dataReactive())
     # write.csv(metaTable,"mockdata.csv",row.names = F,na = "")
     # js$reset()
   })
+  
+  plotReactive <- reactive({
+    output$price_plot <- renderPlotly(price.plot(input$company,input$name))
+  })
+  
+  # output$test01 <- renderPlot({
+  #   if (is.null(v$data)) return()
+  #   price.plot(input$company,input$name)
+  # })
 })

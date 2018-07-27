@@ -1,8 +1,34 @@
 pricing_info <- read.csv("MySQL_CleanData180509_002.csv",stringsAsFactors = F)
 # mean(na.omit(as.numeric(pricing_info$PriceConvertedUSD[which(grepl("Lightspeed Plus",pricing_info$Model))])))
 
-pricing <- function(company,model){
+pricing.for.average <- function(company,model){
   filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
-  return(mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD))))
+  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  return(average.price)
 }
+
+pricing.for.retail  <- function(company,model){
+  filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
+  filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
+  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  retail.price <- average.price * 1.1
+  return(retail.price)
+}
+
+pricing.for.buyback  <- function(company,model){
+  filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
+  filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
+  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  buyback <- average.price * 0.85
+  return(buyback)
+}
+
+price.plot <- function(company,model){
+  return(plot_ly(x = c(pricing.for.retail(company,model),pricing.for.average(company,model),
+                   pricing.for.buyback(company,model)), y = c("retail","average","buyback"), type = 'bar', orientation = 'h') %>%
+           layout(autosize = F, width = 500, height = 150))
+}
+
+# p <- plot_ly(x = c(pricing.for.retail("GE","Lightspeed Plus"),pricing.for.average("GE","Lightspeed Plus"),
+#                    pricing.for.buyback("GE","Lightspeed Plus")), y = c("retail","average","buyback"), type = 'bar', orientation = 'h')
