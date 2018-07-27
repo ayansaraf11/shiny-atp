@@ -7,12 +7,11 @@ source("pricing.r")
 shinyServer(function(input,output,session){
   colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
                               "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
-  value123 <- reactiveVal("Lightspeed 16")
-  v <- reactiveValues(data = NULL)
+  
   output$machine_name <- renderUI({
     filter.name.bycompany <- filter(metaTable,Company==input$company)
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
-    selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value123())
+    selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
   output$mytable <- renderDataTable(
     metaTable
@@ -41,11 +40,11 @@ shinyServer(function(input,output,session){
   })
   
   output$totalValue <- renderValueBox({
-    valueBox(paste0("$",sum(metaTable$Purchase_Price)),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
+    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
-    valueBox(paste0("$",floor(sum(metaTable$Purchase_Price)/length(metaTable$Model))),"Average Value of Listing",icon = icon("dollar"),color = "green")
+    valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Listing",icon = icon("dollar"),color = "green")
   })
   
   output$oemplot <- renderPlot({
@@ -65,6 +64,7 @@ shinyServer(function(input,output,session){
                Coil_Thickness = c(input$thickness))
   })
   observeEvent(input$price, {
+    tableReactive()
     plotReactive()
     #price.plot(input$company,input$name)
     #print(pricing.for.average(input$company,input$name))
@@ -75,6 +75,17 @@ shinyServer(function(input,output,session){
   
   plotReactive <- reactive({
     output$price_plot <- renderPlotly(price.plot(input$company,input$name))
+  })
+  
+  tableReactive <- reactive({
+    output$priceTable <- renderDataTable({
+      Standard = c("Retail Price","Average Price","Buyback Price")
+      Value = c(paste("$",format(round(pricing.for.retail(input$company,input$name)), big.mark = ",")),paste("$",format(round(pricing.for.average(input$company,input$name)), big.mark = ",")),
+                paste("$",format(round(pricing.for.buyback(input$company,input$name)), big.mark = ",")))
+      df1 = data.frame(Standard,Value)
+      colnames(df1) <- c("Price Standard", "Dollar Value")
+      datatable(df1,options = list(dom = 't'))
+    })
   })
   
   # output$test01 <- renderPlot({

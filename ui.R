@@ -29,7 +29,7 @@ dashboardPage(skin = "blue",
             sidebarPanel(
               selectInput("company","Choose OEM",
                           choices = unique(machine_data$Company),
-                          selected = unique(machine_data$Company)[1]),
+                          selected = value2),
               selectInput("machine_type","Type of Machine",
                           choices= unique(machine_data$Type),
                           selected = unique(machine_data$Type)[1]),
@@ -60,6 +60,8 @@ dashboardPage(skin = "blue",
               hidden(actionButton("price","Price Analysis")),
              hidden(actionButton("submit","Add to Inventory")),
              br(),
+             dataTableOutput("priceTable"),
+             br(),
              plotlyOutput("price_plot")
               )),
     tabItem("view",
@@ -71,7 +73,8 @@ dashboardPage(skin = "blue",
                            selected = unique(machine_data$Model[1]))),
               mainPanel(
              plotlyOutput("track_asset_plot"),
-             box(title = "Asset History", width = "auto",status = "primary", height = "auto",solidHeader = T,scrollX = T, dataTableOutput("track_asset_table"))))
+             box(title = "Asset History", width = "auto",status = "primary", height = "auto",
+                 solidHeader = T,scrollX = T, dataTableOutput("track_asset_table"))))
   )
 ))
 

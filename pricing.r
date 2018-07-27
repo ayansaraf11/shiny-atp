@@ -25,9 +25,13 @@ pricing.for.buyback  <- function(company,model){
 }
 
 price.plot <- function(company,model){
+  a <- list(
+    autotick = TRUE,
+    tick0 = 0
+  )
   return(plot_ly(x = c(pricing.for.retail(company,model),pricing.for.average(company,model),
-                   pricing.for.buyback(company,model)), y = c("retail","average","buyback"), type = 'bar', orientation = 'h') %>%
-           layout(autosize = F, width = 500, height = 150))
+                   pricing.for.buyback(company,model)), y = c("Retail","Average","Buyback"), type = 'bar', orientation = 'h') %>%
+           layout(title=paste0("Price range of ",model),xaxis=a,autosize = F, width = 600, height = 150))
 }
 
 # p <- plot_ly(x = c(pricing.for.retail("GE","Lightspeed Plus"),pricing.for.average("GE","Lightspeed Plus"),
