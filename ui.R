@@ -1,11 +1,11 @@
 jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
 dashboardPage(skin = "blue",
-  dashboardHeader(title = "iDX ATP"),
+  dashboardHeader(title = "iDX"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Home", tabName = "home", icon = icon("dashboard")),
-      menuItem("Add Listing", tabName = "add", icon = icon("plus")),
-      menuItem("View Inventory", tabName = "view",icon = icon("search")),
+      menuItem("Add Assets", tabName = "add", icon = icon("plus")),
+      menuItem("View Assets", tabName = "view",icon = icon("search")),
       menuItem("Track Assets",tabName= "track",icon = icon("globe"))
     )
   ),
@@ -17,8 +17,8 @@ dashboardPage(skin = "blue",
               valueBoxOutput("totalValue"),
               valueBoxOutput("averageValue")),
               fluidRow(
-                box(status = "primary", plotOutput("oemplot")),
-                box(status = "success", plotlyOutput("allAsset"))
+                box(status = "primary", width = 6, plotOutput("oemplot")),
+                box(status = "success", width = 6, plotlyOutput("allAsset"))
               )),
     tabItem(tabName = "add",
             sidebarPanel(
@@ -60,16 +60,19 @@ dashboardPage(skin = "blue",
              plotlyOutput("price_plot")
               )),
     tabItem("view",
-            dataTableOutput("mytable")),
+            box(title = "All Assets for (username)", width = "auto",
+                status = "primary", height = "auto", solidHeader = T,
+            dataTableOutput("mytable"))),
     tabItem("track",
-              sidebarPanel(
-              selectInput("select_asset","Choose Machine to Track",
+            sidebarPanel(
+              selectInput("select_asset","Choose Asset to Track",
                           choices = unique(machine_data$Model),
-                           selected = unique(machine_data$Model[1]))),
+                          selected = unique(machine_data$Model[1]))
+            ),
               mainPanel(
-                box(title = "Asset Map", width = "auto",status = "primary", height = "auto",
+                box(title = "Asset Map", width = 12 ,status = "primary", height = "auto",
                     solidHeader = T,plotlyOutput("track_asset_plot")),
-             box(title = "Asset History", width = "auto",status = "primary", height = "auto",
+             box(title = "Asset History", width = 12 ,status = "primary", height = "auto",
                  solidHeader = T, dataTableOutput("track_asset_table"))))
   )
 ))

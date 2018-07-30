@@ -13,10 +13,14 @@ shinyServer(function(input,output,session){
   
   
   output$mytable <- renderDataTable(
+<<<<<<< HEAD
     showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit )
     # options = list(pageLength = 5),
+=======
+    select(metaTable, UID, Company, Type, Model, Purchase_Price)
     )
     # pageLength = 5),
+>>>>>>> aefd44c18885a7b397532b0aa3653f76796708cd
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
     # $(this).toggleClass('selected');
