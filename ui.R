@@ -60,7 +60,9 @@ dashboardPage(skin = "blue",
              plotlyOutput("price_plot")
               )),
     tabItem("view",
-            dataTableOutput("mytable")),
+            box(title = "All Assets for (user)", width = "auto",
+                status = "primary", height = "auto", solidHeader = T,
+            dataTableOutput("mytable"))),
     tabItem("track",
               sidebarPanel(
               selectInput("select_asset","Choose Asset to Track",
