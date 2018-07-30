@@ -1,5 +1,6 @@
 source("mapping.R")
-source("pricing.r")
+source("pricing.R")
+source("global.R")
 shinyServer(function(input,output,session){
   colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
                               "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
@@ -9,16 +10,19 @@ shinyServer(function(input,output,session){
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
+  
+  
   output$mytable <- renderDataTable(
-    metaTable
-    # options = list(pageLength = 5),
+    select(metaTable, UID, Company, Type, Model, Purchase_Price)
+    )
+    # pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
     # $(this).toggleClass('selected');
     # Shiny.onInputChange('rows',
     # table.rows('.selected').indexes().toArray());
     # });}"
-  )
+  
   observeEvent(input$edit, {
     show("purchase_price")
     show("service")
@@ -32,20 +36,19 @@ shinyServer(function(input,output,session){
   
   
   output$machineCount <- renderValueBox({
-    valueBox(length(unique(metaTable$Model)), "Machines in the Inventory", icon = icon("list"), color = "blue")
+    valueBox(length(unique(metaTable$Model)), "Total Assets", icon = icon("list"), color = "blue")
   })
-  
   output$totalValue <- renderValueBox({
-    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
+    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
-    valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Listing",icon = icon("dollar"),color = "green")
+    valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
   })
   
-  output$oemplot <- renderPlot({
-    barplot(table(metaTable$Company),horiz = TRUE, col = "skyblue",main = "Variety of OEMs in AMP")
+  output$oemplot <- renderPlot({test_a
   })
+  
   
   output$track_asset_plot <- renderPlotly({
     tracking_asset(input$select_asset)
