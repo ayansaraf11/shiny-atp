@@ -27,7 +27,7 @@ tracking_asset <- function(filterName){
       text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
     ) %>%
     layout(
-      title = ~paste("Location of ",filterName),
+      title = ~paste0("Location of ",filterName),
       geo = g,
       autosize = T
     )

@@ -63,7 +63,7 @@ dashboardPage(skin = "blue",
             dataTableOutput("mytable")),
     tabItem("track",
               sidebarPanel(
-              selectInput("select_asset","Choose Machine to Track",
+              selectInput("select_asset","Choose Asset to Track",
                           choices = unique(machine_data$Model),
                            selected = unique(machine_data$Model[1]))),
               mainPanel(
