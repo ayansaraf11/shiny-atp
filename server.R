@@ -32,19 +32,19 @@ shinyServer(function(input,output,session){
   
   
   output$machineCount <- renderValueBox({
-    valueBox(length(unique(metaTable$Model)), "Machines in the Inventory", icon = icon("list"), color = "blue")
+    valueBox(length(unique(metaTable$Model)), "Total Assets", icon = icon("list"), color = "blue")
   })
   
   output$totalValue <- renderValueBox({
-    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Listings",icon = icon("dollar"),color = "yellow")
+    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
-    valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Listing",icon = icon("dollar"),color = "green")
+    valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
   })
   
   output$oemplot <- renderPlot({
-    barplot(table(metaTable$Company),horiz = TRUE, col = "skyblue",main = "Variety of OEMs in AMP")
+    barplot(table(metaTable$Company),horiz = TRUE, col = "skyblue",main = "Total Assets by OEM")
   })
   
   output$track_asset_plot <- renderPlotly({

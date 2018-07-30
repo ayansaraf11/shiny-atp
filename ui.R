@@ -1,11 +1,11 @@
 jsResetCode <- "shinyjs.reset = function() {history.go(0)}"
 dashboardPage(skin = "blue",
-  dashboardHeader(title = "iDX ATP"),
+  dashboardHeader(title = "iDX"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Home", tabName = "home", icon = icon("dashboard")),
-      menuItem("Add Listing", tabName = "add", icon = icon("plus")),
-      menuItem("View Inventory", tabName = "view",icon = icon("search")),
+      menuItem("Add Assets", tabName = "add", icon = icon("plus")),
+      menuItem("View Assets", tabName = "view",icon = icon("search")),
       menuItem("Track Assets",tabName= "track",icon = icon("globe"))
     )
   ),
