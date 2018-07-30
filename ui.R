@@ -17,8 +17,8 @@ dashboardPage(skin = "blue",
               valueBoxOutput("totalValue"),
               valueBoxOutput("averageValue")),
               fluidRow(
-                box(status = "primary", plotOutput("oemplot")),
-                box(status = "success", plotlyOutput("allAsset"))
+                box(status = "primary", width = 6, plotOutput("oemplot")),
+                box(status = "success", width = 6, plotlyOutput("allAsset"))
               )),
     tabItem(tabName = "add",
             sidebarPanel(
