@@ -60,18 +60,17 @@ dashboardPage(skin = "blue",
              plotlyOutput("price_plot")
               )),
     tabItem("view",
-            box(title = "All Assets for (user)", width = "auto",
+            box(title = "All Assets for (username)", width = "auto",
                 status = "primary", height = "auto", solidHeader = T,
             dataTableOutput("mytable"))),
     tabItem("track",
-              sidebarPanel(
-              selectInput("select_asset","Choose Asset to Track",
-                          choices = unique(machine_data$Model),
-                           selected = unique(machine_data$Model[1]))),
-              mainPanel(
-                box(title = "Asset Map", width = "auto",status = "primary", height = "auto",
+              mainPanel(fluidRow(column(width = 12),
+                selectInput("select_asset","Choose Asset to Track",
+                                choices = unique(machine_data$Model),
+                                selected = unique(machine_data$Model[1]))),
+                box(title = "Asset Map", width = 12 ,status = "primary", height = "auto",
                     solidHeader = T,plotlyOutput("track_asset_plot")),
-             box(title = "Asset History", width = "auto",status = "primary", height = "auto",
+             box(title = "Asset History", width = 12 ,status = "primary", height = "auto",
                  solidHeader = T, dataTableOutput("track_asset_table"))))
   )
 ))

@@ -12,8 +12,9 @@ require(digest)||install.packages("digest")
 
 value1 <- "Lightspeed 16"
 value2 <- "GE"
-machine_data <- read.csv("mockdata.csv",stringsAsFactors = F)
+machine_data <- read.csv("mockdata.csv",stringsAsFactors = F, row.names = NULL)
 metaTable <- machine_data
+metaTable$row.names <- NULL
 options(warn = -1)
 
 #Determine x axis limit for OEM barplot by finding the OEM with the max number of unique assets

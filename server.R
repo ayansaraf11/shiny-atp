@@ -13,9 +13,7 @@ shinyServer(function(input,output,session){
   
   
   output$mytable <- renderDataTable(
-    select(metaTable, UID, Company, Type, Model, Purchase_Price),
-    options = list(autoWidth = TRUE,
-                   columnDefs = list(list(width = '200px', targets = "_all"))
+    select(metaTable, UID, Company, Type, Model, Purchase_Price)
     )
     # pageLength = 5),
     # callback = "function(table) {
@@ -24,7 +22,7 @@ shinyServer(function(input,output,session){
     # Shiny.onInputChange('rows',
     # table.rows('.selected').indexes().toArray());
     # });}"
-  )
+  
   observeEvent(input$edit, {
     show("purchase_price")
     show("service")
