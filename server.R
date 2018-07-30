@@ -10,7 +10,7 @@ shinyServer(function(input,output,session){
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
   output$mytable <- renderDataTable(
-    metaTable
+    showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit )
     # options = list(pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
