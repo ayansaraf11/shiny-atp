@@ -10,7 +10,7 @@ shinyServer(function(input,output,session){
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
   output$mytable <- renderDataTable(
-    metaTable
+    ##select(metaTable, )
     # options = list(pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
@@ -34,9 +34,9 @@ shinyServer(function(input,output,session){
   output$machineCount <- renderValueBox({
     valueBox(length(unique(metaTable$Model)), "Total Assets", icon = icon("list"), color = "blue")
   })
-  
-  output$totalValue <- renderValueBox({
-    valueBox(paste0("$",format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
+  renderValueBox({
+    valueBox(paste0("$",
+  output$totalValue <- format(sum(metaTable$Purchase_Price), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
