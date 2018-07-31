@@ -35,26 +35,25 @@ oem_plot_data_type <- oem_plot_data %>% group_by(Type) %>% summarise(top_2 = max
 
 #Format Company Plot
 plot_company <- ggplot(data=oem_plot_data_company, aes(x=oem_plot_data_company$Company,
-                                                       y=top, fill = "dodgerblue4")) +
-  geom_bar(stat="identity") +
+                                                       y=top)) +
+  geom_bar(stat="identity", fill="red3", colour="black") +
   coord_flip() +
 ggtitle("Asset Overview") +
   xlab(print("Brand")) +
-  #guides(fill=guide_legend(title="OEM")) +
+  guides(fill=F) +
   ylab("Total") +
   geom_text(aes(label=top, vjust= 2, hjust = 2)) +
-  theme(title=element_text(size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
+  theme(title = element_text(hjust = 0.5, size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
         axis.title=element_text(size=14,face = "italic"))
  #Format Type Plot 
-plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=top_2,
-                                                 fill = "dodgerblue4")) +
-  geom_bar(stat="identity") +
+plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=top_2)) +
+  geom_bar(stat="identity", fill="red3", colour="black") +
   coord_flip() +
   ggtitle("Asset Overview") +
   xlab(print("Type")) +
-  #guides(fill=guide_legend(title="Type")) +
+  guides(fill=F) +
   ylab("Total") +
-  geom_text(aes(label=top_2, vjust= 2, hjust = 2)) +
-  theme(title=element_text(size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
+  geom_text(aes(label=top_2, vjust= 1, hjust = 2)) +
+  theme(title=element_text(hjust = 0.5, size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
         axis.title=element_text(size=14,face = "italic"))
   
