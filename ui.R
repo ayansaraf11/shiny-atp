@@ -16,11 +16,12 @@ dashboardPage(skin = "blue",
               valueBoxOutput("machineCount"),
               valueBoxOutput("totalValue"),
               valueBoxOutput("averageValue")),
-              fluidRow(sidebarPanel(selectInput("selected", "Filter Asset Inventory",
-                    choices = list("OEM" = "OEM", "Type" = "Type", selected = "OEM")),
-                box(status = "primary", width = 6, plotOutput("oemplot"),
+              fluidRow(column(2, selectInput("selected", "Filter Asset Inventory",
+                    choices = list("Brand" = "Brand", "Type" = "Type"), selected = "OEM"))),
+              fluidRow(
+                box(status = "primary", width = 6, plotOutput("oemplot")),
                 box(status = "success", width = 6, plotlyOutput("allAsset"))
-              ))),
+              )),
     tabItem(tabName = "add",
             sidebarPanel(
               selectInput("company","Choose OEM",

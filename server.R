@@ -48,7 +48,7 @@ shinyServer(function(input,output,session){
   ##########
   
   output$oemplot <- renderPlot({
-    if(input$selected == "OEM"){plot_company           
+    if(input$selected == "Brand"){plot_company           
     }                                        
     else if(input$selected == "Type"){plot_type
     }
