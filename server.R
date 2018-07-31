@@ -45,10 +45,14 @@ shinyServer(function(input,output,session){
   output$averageValue <- renderValueBox({
     valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
   })
+  ##########
   
-  output$oemplot <- renderPlot({test_a
+  output$oemplot <- renderPlot({
+    if(input$selected == "OEM"){plot_company           
+    }                                        
+    else if(input$selected == "Type"){plot_type
+    }
   })
-  
   
   output$track_asset_plot <- renderPlotly({
     tracking_asset(input$select_asset)

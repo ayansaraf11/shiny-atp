@@ -18,26 +18,41 @@ metaTable$row.names <- NULL
 options(warn = -1)
 
 #Determine x axis limit for OEM barplot by finding the OEM with the max number of unique assets
-oem_plot_data <- select(metaTable, UID, Company)
+oem_plot_data <- select(metaTable, UID, Company, Type)
 oem_plot_data <- unique(oem_plot_data)
 oem_plot_data$Company <- as.character(oem_plot_data$Company)
 oem_plot_data$Company_Sum <- as.numeric(ave(oem_plot_data$Company, oem_plot_data$Company, FUN = length))
+oem_plot_data$Type <- as.character(oem_plot_data$Type)
+oem_plot_data$Type_Sum <- as.numeric(ave(oem_plot_data$Type, oem_plot_data$Type, FUN = length))
 x_axis <- max(oem_plot_data$Company_Sum)
+x_axis_2 <- max(oem_plot_data$Type_Sum)
 
-#Create df with only unique companies and their total number of unique assets
-oem_plot_data_2 <- oem_plot_data %>% group_by(Company) %>% summarise(top = max(Company_Sum)) %>%
+#Create 2 df with only unique companies or unique models (both with totals)
+oem_plot_data_company <- oem_plot_data %>% group_by(Company) %>% summarise(top = max(Company_Sum)) %>%
   arrange(top)
+oem_plot_data_type <- oem_plot_data %>% group_by(Type) %>% summarise(top_2 = max(Type_Sum)) %>%
+  arrange(top_2)
 
-#Format oem plot
-test_a <- ggplot(data=oem_plot_data_2, aes(x=Company, y=top, fill = Company)) +
+#Format Company Plot
+plot_company <- ggplot(data=oem_plot_data_company, aes(x=oem_plot_data_company$Company,
+                                                       y=top, fill = oem_plot_data_company$Company)) +
   geom_bar(stat="identity") +
   coord_flip() +
 ggtitle("Asset Overview") +
-  xlab("Company") +
+  xlab(print("Company")) +
   ylab("Total") +
   geom_text(aes(label=top, vjust= 2, hjust = 2)) +
   theme(title=element_text(size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
         axis.title=element_text(size=14,face = "italic"))
-  
-  
+ #Format Type Plot 
+plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=top_2,
+                                                 fill = oem_plot_data_type$Type)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  ggtitle("Asset Overview") +
+  xlab(print("Type")) +
+  ylab("Total") +
+  geom_text(aes(label=top, vjust= 2, hjust = 2)) +
+  theme(title=element_text(size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
+        axis.title=element_text(size=14,face = "italic"))
   
