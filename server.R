@@ -1,7 +1,5 @@
-library(lintr)
 source("mapping.R")
 source("pricing.R")
-source("global.R")
 shinyServer(function(input,output,session){
   colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
                               "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
@@ -48,9 +46,11 @@ shinyServer(function(input,output,session){
   })
   
   output$oemplot <- renderPlot({
-    if(input$selected == "Brand"){plot_company           
+    if(input$selected == "Brand"){
+      plot_company           
     }                                        
-    else if(input$selected == "Type"){plot_type
+    else if(input$selected == "Type"){
+      plot_type
     }
   })
   
@@ -59,7 +59,7 @@ shinyServer(function(input,output,session){
   })
   
   output$allAsset <- renderPlotly({
-    allMachines()
+    allMachines(input$Pick)
   })
   output$track_asset_table <- renderDataTable({
     asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,Company,Type,Model,Purchase_Price)

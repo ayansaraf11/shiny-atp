@@ -36,10 +36,10 @@ oem_plot_data_type <- oem_plot_data %>% group_by(Type) %>% summarise(top_2 = max
 #Format Company Plot
 plot_company <- ggplot(data=oem_plot_data_company, aes(x=oem_plot_data_company$Company,
                                                        y=top)) +
-  geom_bar(stat="identity", fill="red3", colour="black") +
+  geom_bar(stat="identity", fill="dodgerblue2", colour="black") +
   coord_flip() +
-ggtitle("Asset Overview") +
-  xlab(print("Brand")) +
+ ggtitle("Asset Overview") +
+  xlab("Brand") +
   guides(fill=F) +
   ylab("Total") +
   geom_text(aes(label=top, vjust= 2, hjust = 2)) +
@@ -47,10 +47,10 @@ ggtitle("Asset Overview") +
         axis.title=element_text(size=14,face = "italic"))
  #Format Type Plot 
 plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=top_2)) +
-  geom_bar(stat="identity", fill="red3", colour="black") +
+  geom_bar(stat="identity", fill="dodgerblue2", colour="black") +
   coord_flip() +
   ggtitle("Asset Overview") +
-  xlab(print("Type")) +
+  xlab("Type") +
   guides(fill=F) +
   ylab("Total") +
   geom_text(aes(label=top_2, vjust= 1, hjust = 2)) +
