@@ -1,5 +1,3 @@
-
-
 data(zipcode)
 
 zipcode %>% mutate(zip = readr::parse_number(zip))
@@ -79,5 +77,3 @@ allMachines <- function(OEM){
   return(p)
   }
 }
-
-
