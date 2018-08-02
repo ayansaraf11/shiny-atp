@@ -12,7 +12,7 @@ shinyServer(function(input,output,session){
   })
   
   output$mytable <- renderDataTable(
-    showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit,Average_Price)
+    showTable <- select(metaTable,UID,Company,Type,Model,Purchase_Price), rownames = F
     # options = list(pageLength = 5),
     )
     # pageLength = 5),

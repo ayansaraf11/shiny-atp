@@ -25,7 +25,7 @@ plot_company <- ggplot(data=oem_plot_data_company, aes(x=oem_plot_data_company$C
   guides(fill=F) +
   ylab("Total") +
   geom_text(aes(label=top, vjust= 2, hjust = 2)) +
-  theme(title = element_text(hjust = 0.5, size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
+  theme(plot.title = element_text(hjust = 0.5, size=16), axis.text=element_text(size=12, face = "italic"),
         axis.title=element_text(size=14,face = "italic"))
 #Format Type Plot 
 plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=top_2)) +
@@ -36,5 +36,5 @@ plot_type <- ggplot(data=oem_plot_data_type, aes(x=oem_plot_data_type$Type, y=to
   guides(fill=F) +
   ylab("Total") +
   geom_text(aes(label=top_2, vjust= 1, hjust = 2)) +
-  theme(title=element_text(hjust = 0.5, size=16, face = "bold"), axis.text=element_text(size=12, face = "italic"),
+  theme(plot.title=element_text(hjust = 0.5, size=16), axis.text=element_text(size=12, face = "italic"),
         axis.title=element_text(size=14,face = "italic"))
