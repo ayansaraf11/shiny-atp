@@ -11,9 +11,9 @@ pricing.for.average <- function(company,model){
 # for(i in 1:nrow(machine_data)){
 #   filter.byoem <- filter(pricing_info,pricing_info$OEM==machine_data$Company[i])
 #   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==machine_data$Model[i])
-#   machine_data$Average_Price[i] <- round(mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD))))
+#   machine_data$Average_Price[i] <- round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model=="Lightspeed 16"),"PriceConvertedUSD"]))))
 # }
-# write.csv(machine_data,"mockdata.csv")
+# write.csv(machine_data,"mockdata.csv",row.names = F)
 
 
 pricing.for.retail  <- function(company,model){
