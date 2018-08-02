@@ -59,7 +59,7 @@ allMachines <- function(OEM){
         text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
       ) %>%
       layout(
-        title = ~paste("<b>Location of </b>", paste(OEM), "<b>Assets</b>"),
+        title = ~paste("Location of", paste(OEM), "Assets"),
         geo = g,
         size = 16
       )
@@ -70,7 +70,7 @@ allMachines <- function(OEM){
       text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
     ) %>%
     layout(
-      title = ~paste("<b>Location of </b>", paste(OEM), "<b>Assets</b>"),
+      title = ~paste("Location of", paste(OEM), "Assets"),
       geo = g,
       size = 16
     )
