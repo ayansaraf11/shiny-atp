@@ -1,6 +1,4 @@
-source("mapping.R")
-source("pricing.R")
-source("dashboard.R")
+
 shinyServer(function(input,output,session){
   machine_data <- read.csv("mockdata.csv",stringsAsFactors = F, row.names = NULL)
   metaTable <- machine_data
