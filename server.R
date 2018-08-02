@@ -11,7 +11,7 @@ shinyServer(function(input,output,session){
   })
   
   output$mytable <- renderDataTable(
-    showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit )
+    showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit,Average_Price)
     # options = list(pageLength = 5),
     )
     # pageLength = 5),
@@ -62,7 +62,7 @@ shinyServer(function(input,output,session){
     allMachines(input$Pick)
   })
   output$track_asset_table <- renderDataTable({
-    asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,Company,Type,Model,Purchase_Price)
+    asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,Company,Type,Model,Purchase_Price,Average_Price)
     datatable(asset_history_table,options = list(dom = 't'))
   })
   
