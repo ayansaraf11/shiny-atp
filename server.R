@@ -1,3 +1,4 @@
+library(lintr)
 source("mapping.R")
 source("pricing.R")
 source("global.R")
@@ -10,7 +11,6 @@ shinyServer(function(input,output,session){
     filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
-  
   
   output$mytable <- renderDataTable(
     showTable <- select(metaTable,UID,Company,Type,Model,Year_Installed,Purchase_Price,Patient_Weight_Limit )
@@ -47,9 +47,12 @@ shinyServer(function(input,output,session){
     valueBox(paste0("$",format(floor(sum(metaTable$Purchase_Price)/length(metaTable$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
   })
   
-  output$oemplot <- renderPlot({test_a
+  output$oemplot <- renderPlot({
+    if(input$selected == "Brand"){plot_company           
+    }                                        
+    else if(input$selected == "Type"){plot_type
+    }
   })
-  
   
   output$track_asset_plot <- renderPlotly({
     tracking_asset(input$select_asset)
@@ -92,5 +95,4 @@ shinyServer(function(input,output,session){
       datatable(df1,options = list(dom = 't'))
     })
   })
-  
 })
