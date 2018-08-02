@@ -1,5 +1,6 @@
 source("mapping.R")
 source("pricing.R")
+source("dashboard.R")
 shinyServer(function(input,output,session){
   colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services",
                               "Company","Type","Model","Coil_Thickness","Patient_Weight_Limit","MD5.Hash")
