@@ -13,7 +13,7 @@ require(digest)||install.packages("digest")
 
 value1 <- "Lightspeed 16"
 value2 <- "GE"
-machine_data <- read.csv("mockdata.csv",stringsAsFactors = F, row.names = NULL)
+machine_data <- read.csv("mockdatanew.csv",stringsAsFactors = F, row.names = NULL)
 metaTable <- machine_data
 metaTable$row.names <- NULL
 options(warn = -1)
