@@ -68,7 +68,11 @@ dashboardPage(skin = "blue",
     tabItem("view",
             # box(title = "All Assets for (username)", width = 10,
             #     status = "primary", height = "auto", solidHeader = T,
+            sidebarPanel(
             dataTableOutput("mytable")),
+            mainPanel(
+              dataTableOutput("info_table")
+            )),
     tabItem("track",
             sidebarPanel(
               selectInput("select_asset","Choose Asset to Track",

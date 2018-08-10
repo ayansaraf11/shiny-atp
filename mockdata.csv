@@ -1,4 +1,4 @@
-"UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services","Model","Type","Company","Coil_Thickness","Patient_Weight_Limit","MD5.Hash","Average_Price"
+"UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services","Model","Type","Company","Coil_Thickness","Patient_Weight_Limit","MD5.Hash","Retail_Price"
 "Asset1",2008,"Baltimore","Maryland",21201,"52000","2","Lightspeed 16","CT","GE","4","350","ef75fe74347e14d790d1b8f43470a240",125780
 "Asset2",2014,"Oakland","California",94577,"65000","3","Lightspeed VCT 64","CT","GE","2","280","86c1ef3e2432f6af3c0d9e367108ea2e",173937
 "Asset3",2010,"Miami","Florida",33101,"81000","2","Emotion 16","CT","Siemens","3","250","50bf91f817119a9cb9c23a22d28a1e1f",72441

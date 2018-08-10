@@ -1,11 +1,11 @@
 pricing_info <- read.csv("MySQL_CleanData180509_002.csv",stringsAsFactors = F)
 # mean(na.omit(as.numeric(pricing_info$PriceConvertedUSD[which(grepl("Lightspeed Plus",pricing_info$Model))])))
 
-pricing.for.average <- function(company,model){
+pricing.for.retail <- function(company,model){
   filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
-  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
-  return(average.price)
+  retail.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  return(retail.price)
 }
 
 # for(i in 1:nrow(machine_data)){
@@ -16,19 +16,19 @@ pricing.for.average <- function(company,model){
 # write.csv(machine_data,"mockdata.csv",row.names = F)
 
 
-pricing.for.retail  <- function(company,model){
+pricing.for.sell  <- function(company,model){
   filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
-  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
-  retail.price <- average.price * 1.1
-  return(retail.price)
+  retail.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  sell.price <- (retail.price * 0.9) - 34000
+  return(sell.price)
 }
 
 pricing.for.buyback  <- function(company,model){
   filter.byoem <- filter(pricing_info,pricing_info$OEM==company)
   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==model)
-  average.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
-  buyback <- average.price * 0.85
+  retail.price <- mean(na.omit(as.numeric(filter.byoem.bymodel$PriceConvertedUSD)))
+  buyback <- retail.price * 0.70
   return(buyback)
 }
 
@@ -37,8 +37,8 @@ price.plot <- function(company,model){
     autotick = TRUE,
     tick0 = 0
   )
-  return(plot_ly(x = c(pricing.for.retail(company,model),pricing.for.average(company,model),
-                   pricing.for.buyback(company,model)), y = c("Retail","Average","Buyback"), type = 'bar', orientation = 'h') %>%
+  return(plot_ly(x = c(pricing.for.sell(company,model),
+                   pricing.for.buyback(company,model),pricing.for.retail(company,model)), y = c("Sell","Buyback","Retail"), type = 'bar', orientation = 'h') %>%
            layout(title=paste0("Price range of ",model),xaxis=a,autosize = F, width = 600, height = 150))
 }
 
