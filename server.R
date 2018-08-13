@@ -13,7 +13,7 @@ shinyServer(function(input,output,session){
   })
   
   output$mytable <- renderDataTable(
-    showTable <- select(metaTable,Company,Type,Model), rownames = F)
+    showTable <- select(metaTable,Company,Type,Model), rownames = F,server = T, selection = "single")
     # pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
@@ -92,6 +92,51 @@ shinyServer(function(input,output,session){
   
   plotReactive <- reactive({
     output$price_plot <- renderPlotly(price.plot(input$company,input$name))
+  })
+  
+  output$select_text <- renderText({
+    paste("<B>Asset Model:</B>",
+    machine_data[input$mytable_rows_selected,c("Model")])
+  })
+  
+  output$select_text_1 <- renderText({
+    paste("<B>Asset Company:</B>",
+    machine_data[input$mytable_rows_selected,c("Company")])
+  })
+  
+  output$select_text_2 <- renderText({
+    paste("<B>Asset Type:</B>",
+    machine_data[input$mytable_rows_selected,c("Type")])
+  })
+  
+  output$year_mfg <- renderText({
+    paste("<B>Year Installed:</B>",
+    machine_data[input$mytable_rows_selected,c("Year_Installed")])
+  })
+  
+  output$location_text <- renderText({
+    paste0("<B>Location: </B>",
+    machine_data[input$mytable_rows_selected,c("City")],", ",machine_data[input$mytable_rows_selected,c("State")])
+  })
+  
+  output$p.price <- renderText({
+    paste("<B>Purchase Price in USD($):</B>",
+    format(machine_data[input$mytable_rows_selected,c("Purchase_Price")], big.mark = ","))
+  })
+  
+  output$r.price <- renderText({
+    paste("<B>Retail Price in USD($):</B>",
+    format(machine_data[input$mytable_rows_selected,c("Retail_Price")], big.mark = ","))
+  })
+  
+  output$s.price <- renderText({
+    paste("<B>Selling Price in USD($):</B>",
+    format(round(machine_data[input$mytable_rows_selected,c("Retail_Price")]*0.823), big.mark = ","))
+  })
+  
+  output$b.price <- renderText({
+    paste("<B>Buyback Price in USD($):</B>",
+    format(round(machine_data[input$mytable_rows_selected,c("Retail_Price")]*0.673), big.mark = ","))
   })
   
   tableReactive <- reactive({

@@ -8,12 +8,11 @@ pricing.for.retail <- function(company,model){
   return(retail.price)
 }
 
-# for(i in 1:nrow(machine_data)){
-#   filter.byoem <- filter(pricing_info,pricing_info$OEM==machine_data$Company[i])
-#   filter.byoem.bymodel <- filter(filter.byoem,filter.byoem$Model==machine_data$Model[i])
-#   machine_data$Average_Price[i] <- round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model=="Lightspeed 16"),"PriceConvertedUSD"]))))
-# }
-# write.csv(machine_data,"mockdata.csv",row.names = F)
+ # for(i in 1:nrow(machine_data)){
+ #   machine_data$Sell_Price[i] <-round((machine_data$Retail_Price[i]* 0.823))
+ #   machine_data$Buyback_Price[i] <- round((machine_data$Retail_Price[i]* 0.673))
+ # }
+ # write.csv(machine_data,"mockdata.csv",row.names = F)
 
 
 pricing.for.sell  <- function(company,model){

@@ -66,12 +66,22 @@ dashboardPage(skin = "blue",
              plotlyOutput("price_plot")
               )),
     tabItem("view",
-            # box(title = "All Assets for (username)", width = 10,
-            #     status = "primary", height = "auto", solidHeader = T,
             sidebarPanel(
             dataTableOutput("mytable")),
             mainPanel(
-              dataTableOutput("info_table")
+              box(status = "primary",
+              h4(htmlOutput("select_text_1")),
+              h4(htmlOutput("select_text_2")),
+              h4(htmlOutput("select_text")),
+              br(),
+              h4(htmlOutput("year_mfg")),
+              h4(htmlOutput("location_text")),
+              br(),
+              h4(htmlOutput("p.price")),
+              h4(htmlOutput("r.price")),
+              h4(htmlOutput("s.price")),
+              h4(htmlOutput("b.price")))
+              #dataTableOutput("info_table")
             )),
     tabItem("track",
             sidebarPanel(
