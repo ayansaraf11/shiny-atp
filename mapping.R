@@ -22,7 +22,7 @@ tracking_asset <- function(filterName){
   
   p <- plot_geo(blah, lat = ~latitude, lon = ~longitude) %>%
     add_markers(
-      text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
+      text = ~paste(OEM,paste(Type,"-",Model),City,State,sep = "<br />")
     ) %>%
     layout(
       title = ~paste0("Location of ",filterName),
@@ -41,7 +41,7 @@ tracking_asset <- function(filterName){
 #    hash <- digest(text, algo="md5",serialize = F)
 #    xyz$MD5.Hash[i] <- hash
 #  }
-allMachines <- function(OEM){
+allMachines <- function(company){
   g <- list(
     scope = 'usa',
     projection = list(type = 'albers usa'),
@@ -52,14 +52,14 @@ allMachines <- function(OEM){
     countrywidth = 0.5,
     subunitwidth = 0.5
   )
-  choose <- filter(new,new$Company==OEM)
-  if(OEM=="All"){
+  choose <- filter(new,new$OEM==company)
+  if(company=="All"){
     p <- plot_geo(new, lat = ~latitude, lon = ~longitude) %>%
       add_markers(
-        text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
+        text = ~paste(OEM,paste(Type,"-",Model),City,State,sep = "<br />")
       ) %>%
       layout(
-        title = ~paste("Location of", paste(OEM), "Assets"),
+        title = ~paste("Location of", paste(company), "Assets"),
         geo = g,
         size = 16
       )
@@ -67,10 +67,10 @@ allMachines <- function(OEM){
   } else {
   p <- plot_geo(choose, lat = ~latitude, lon = ~longitude) %>%
     add_markers(
-      text = ~paste(Company,paste(Type,"-",Model),City,State,sep = "<br />")
+      text = ~paste(OEM,paste(Type,"-",Model),City,State,sep = "<br />")
     ) %>%
     layout(
-      title = ~paste("Location of", paste(OEM), "Assets"),
+      title = ~paste("Location of", paste(company), "Assets"),
       geo = g,
       size = 16
     )

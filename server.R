@@ -3,17 +3,17 @@ shinyServer(function(input,output,session){
   machine_data <- read.csv("mockdata.csv",stringsAsFactors = F, row.names = NULL)
   metaTable <- machine_data
   metaTable$row.names <- NULL
-  colnames(machine_data) <- c("UID","Year_Installed","City","State","zip","Purchase_Price","Number_of_services","Model",
-                              "Type","Company","Coil_Thickness","Patient_Weight_Limit","MD5.Hash","Retail_Price")
+  colnames(machine_data) <- c( "UID","YearManufactured","City","State","zip","Purchase_Price","Number_of_services","Model","Category",
+                               "OEM","Currency","Make","Type", "Date", "Retail_Price","Condition")
   
   output$machine_name <- renderUI({
-    filter.name.bycompany <- filter(metaTable,Company==input$company)
-    filter.name <- filter(filter.name.bycompany,Type==input$machine_type)
+    filter.name.bycompany <- filter(metaTable,OEM==input$company)
+    filter.name <- filter(filter.name.bycompany,Category==input$machine_type)
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
   
   output$mytable <- renderDataTable(
-    showTable <- select(metaTable,Company,Type,Model), rownames = F,server = T, selection = "single")
+    showTable <- select(metaTable,OEM,Category,Model), rownames = F,server = T, selection = "single")
     # pageLength = 5),
     # callback = "function(table) {
     # table.on('click.dt', 'tr', function() {
@@ -68,14 +68,14 @@ shinyServer(function(input,output,session){
     allMachines(input$Pick)
   })
   output$track_asset_table <- renderDataTable({
-    asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,Company,Type,Model,Retail_Price)
+    asset_history_table <- filter(metaTable,metaTable$Model==input$select_asset) %>% select(UID,OEM,Type,Model,Retail_Price)
     datatable(asset_history_table,options = list(dom = 't'))
   })
   
   dataReactive <- reactive({
     data.frame(UID = c(paste0("Asset",length(unique(metaTable$UID))+1)),Year_Installed = c(2018) ,City = c(input$city),State = c(input$state),zip = c(91105),Purchase_Price = c(input$purchase_price),
                Number_of_services = c(input$service),Model = c(input$name),Type = c(input$machine_type),
-               Company = c(input$company),Coil_Thickness = c(input$thickness),Patient_Weight_Limit = c(input$pwl),
+               OEM = c(input$company),Coil_Thickness = c(input$thickness),Patient_Weight_Limit = c(input$pwl),
                MD5.Hash = c(digest(paste0("Asset",length(unique(metaTable$UID))+1),algo = "md5",serialize = F)),
                Retail_Price = c(round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model==input$name),"PriceConvertedUSD"]))))))
   })
@@ -101,17 +101,22 @@ shinyServer(function(input,output,session){
   
   output$select_text_1 <- renderText({
     paste("<B>Asset Company:</B>",
-    machine_data[input$mytable_rows_selected,c("Company")])
+    machine_data[input$mytable_rows_selected,c("OEM")])
   })
   
   output$select_text_2 <- renderText({
+    paste("<B>Asset Category:</B>",
+    machine_data[input$mytable_rows_selected,c("Category")])
+  })
+  
+  output$type.asset <- renderText({
     paste("<B>Asset Type:</B>",
     machine_data[input$mytable_rows_selected,c("Type")])
   })
   
   output$year_mfg <- renderText({
     paste("<B>Year Installed:</B>",
-    machine_data[input$mytable_rows_selected,c("Year_Installed")])
+    machine_data[input$mytable_rows_selected,c("YearManufactured")])
   })
   
   output$location_text <- renderText({
