@@ -173,7 +173,7 @@ shinyServer(function(input,output,session){
       geom_text_repel(aes(label = paste0(labels,": ", "\n", "$", comma(list_avg)), hjust= 1.2, vjust= -2, check_overlap = TRUE)) +
       scale_x_continuous(labels = point) +
       labs(x = "Price in USD", y = "") +
-      theme(axis.text.x = element_text(face="bold", color="grey30", size=10)) +
+      theme(axis.text.x = element_blank()) + #element_text(face="bold", color="grey30", size=10))
       theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
       theme(panel.background = element_blank(), axis.line = element_blank())
   })
