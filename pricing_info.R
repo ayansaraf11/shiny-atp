@@ -43,3 +43,27 @@ price.plot <- function(company,model){
 
 # p <- plot_ly(x = c(pricing.for.retail("GE","Lightspeed Plus"),pricing.for.average("GE","Lightspeed Plus"),
 #                    pricing.for.buyback("GE","Lightspeed Plus")), y = c("retail","average","buyback"), type = 'bar', orientation = 'h')
+
+price.line.plot <- function(input_row){
+  b <- round(machine_data[input_row,c("Retail_Price")]*0.673)
+  s <- round(machine_data[input_row,c("Retail_Price")]*0.823)
+  r <- machine_data[input_row,c("Retail_Price")]
+  p <- machine_data[input_row,c("Purchase_Price")]
+  point <- format_format(big.mark = ",", decimal.mark = ",", scientific = FALSE)
+  list_avg <- c(b, s, r, p)
+  list_avg_mean <- mean(list_avg)
+  y <- c(.5, .5, .5, .5)
+  labels <- c("Buy-back", "Sale", "Retail", "Purchase")
+  avg_df <- data.frame(list_avg, y, labels)
+  ggplot(avg_df, aes(list_avg, y)) +
+    geom_point() +
+    geom_smooth() +
+    xlim((b - (.05 * list_avg_mean)), (p + (.05 * list_avg_mean))) +
+    geom_text_repel(aes(label = paste0(labels,": ", "\n", "$", comma(list_avg)), hjust= 1.2, vjust= -2, check_overlap = TRUE)) +
+    scale_x_continuous(labels = point) +
+    labs(x = "Price in USD", y = "") +
+    theme(axis.text.x = element_blank()) +
+    theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
+    theme(panel.background = element_blank(), axis.line = element_blank())
+}
+options(warn = -1)

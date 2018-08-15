@@ -176,5 +176,9 @@ shinyServer(function(input,output,session){
       theme(axis.text.x = element_blank()) + #element_text(face="bold", color="grey30", size=10))
       theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
       theme(panel.background = element_blank(), axis.line = element_blank())
+
+    if(length(input$mytable_rows_selected)){
+    price.line.plot(input$mytable_rows_selected)
+    }
   })
 })
