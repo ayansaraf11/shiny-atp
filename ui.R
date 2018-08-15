@@ -69,10 +69,9 @@ dashboardPage(skin = "blue",
              plotlyOutput("price_plot")
               )),
     tabItem("view",
-            sidebarPanel(
+            fluidRow(box(status = "primary", width = 6,
             dataTableOutput("mytable")),
-            mainPanel(
-              box(status = "primary",
+              box(status = "primary", width = 4,
               h4(htmlOutput("select_text_1")),
               h4(htmlOutput("select_text_2")),
               h4(htmlOutput("type.asset")),
@@ -84,9 +83,12 @@ dashboardPage(skin = "blue",
               h4(htmlOutput("p.price")),
               h4(htmlOutput("r.price")),
               h4(htmlOutput("s.price")),
-              h4(htmlOutput("b.price")))
+              h4(htmlOutput("b.price"))),
               #dataTableOutput("info_table")
-            )),
+            column(6,plotOutput("avg_plot", height = "125px", width = "370px"))
+            )
+            #,fluidRow(plotOutput("avg_plot", height = "100px", width = "550px"))
+            ),
     tabItem("track",
             sidebarPanel(
               selectInput("select_asset","Choose Asset to Track",

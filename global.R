@@ -9,7 +9,8 @@ require(plotly)||install.packages("plotly")
 require(zipcode)||install.packages("zipcode")
 require(tidyr)||install.packages("tidyr")
 require(digest)||install.packages("digest")
-
+require(scales) || install.packages("scales")
+require(ggrepel) || install.packages("ggrepel")
 
 value1 <- "Lightspeed 16"
 value2 <- "GE"

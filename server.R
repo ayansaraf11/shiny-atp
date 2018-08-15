@@ -154,4 +154,27 @@ shinyServer(function(input,output,session){
       datatable(df1,options = list(dom = 't'))
     })
   })
+  output$avg_plot <- renderPlot({
+    b <- round(machine_data[input$mytable_rows_selected,c("Retail_Price")]*0.673)
+    s <- round(machine_data[input$mytable_rows_selected,c("Retail_Price")]*0.823)
+    r <- machine_data[input$mytable_rows_selected,c("Retail_Price")]
+    p <- machine_data[input$mytable_rows_selected,c("Purchase_Price")]
+    point <- format_format(big.mark = ",", decimal.mark = ",", scientific = FALSE)
+    list_avg <- c(b, s, r, p)
+    list_avg_mean <- mean(list_avg)
+    y <- c(.5, .5, .5, .5)
+    labels <- c("Buy-back", "Sale", "Retail", "Purchase")
+    avg_df <- data.frame(list_avg, y, labels)
+    ggplot(avg_df, aes(list_avg, y)) +
+      geom_point() +
+      #geom_line() +
+      geom_smooth() +
+      xlim((b - (.05 * list_avg_mean)), (p + (.05 * list_avg_mean))) +
+      geom_text_repel(aes(label = paste0(labels,": ", "\n", "$", comma(list_avg)), hjust= 1.2, vjust= -2, check_overlap = TRUE)) +
+      scale_x_continuous(labels = point) +
+      labs(x = "Price in USD", y = "") +
+      theme(axis.text.x = element_text(face="bold", color="grey30", size=10)) +
+      theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
+      theme(panel.background = element_blank(), axis.line = element_blank())
+  })
 })
