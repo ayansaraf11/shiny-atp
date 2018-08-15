@@ -84,10 +84,8 @@ dashboardPage(skin = "blue",
               h4(htmlOutput("r.price")),
               h4(htmlOutput("s.price")),
               h4(htmlOutput("b.price"))),
-              #dataTableOutput("info_table")
             column(6,plotOutput("avg_plot", height = "125px", width = "370px"))
             )
-            #,fluidRow(plotOutput("avg_plot", height = "100px", width = "550px"))
             ),
     tabItem("track",
             sidebarPanel(
