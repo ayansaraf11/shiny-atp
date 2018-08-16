@@ -12,15 +12,63 @@ shinyServer(function(input,output,session){
     selectInput("name","Name of Machine",choices= unique(filter.name$Model),selected = value1)
   })
   
+  output$edit_purchase_price <- renderUI({
+    textInput("edit_pp","New Purchase Price",value = machine_data[which(machine_data$UID==input$choose_uid),"Purchase_Price"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  
+  output$edit_number_of_service <- renderUI({
+    textInput("edit_nos","New Service Record",value = machine_data[which(machine_data$UID==input$choose_uid),"Number_of_services"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  
+  output$edit_city <- renderUI({
+    textInput("edit_city1","Location City", value = machine_data[which(machine_data$UID==input$choose_uid),"City"][length(which(machine_data$UID==input$choose_uid))] )
+  })
+  
+  output$edit_state <-renderUI({
+    textInput("edit_state1","Location State",value = machine_data[which(machine_data$UID==input$choose_uid),"State"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  
+  output$edit_zip <- renderUI({
+    textInput("edit_zip1","Location Zip",value =machine_data[which(machine_data$UID==input$choose_uid),"zip"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  
+  output$edit_condition <- renderUI({
+    selectInput("edit_condition1","Condition of Asset", choices = c("New","Used","Refurbished","Unknown"),selected = "New")
+  })
+  
+  output$edit_make_of_asset <- renderUI({
+    textInput("edit_make_of_asset1","Make of Asset",value =machine_data[which(machine_data$UID==input$choose_uid),"Make"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  
+  observeEvent(input$edit, {
+    show("edit_purchase_price")
+    show("edit_number_of_service")
+    show("edit_city")
+    show("edit_state")
+    show("edit_zip")
+    show("edit_condition")
+    show("edit_make_of_asset")
+    show("edit_submit")
+  })
+  
+  dataReactive1 <- reactive({
+    data.frame(UID = c(input$choose_uid),YearManufactured = c(2018),City = c(input$edit_city1),State = c(input$edit_state1),zip = c(which(zipcode$city==input$edit_city1)[1]),Purchase_Price = c(input$edit_pp),
+               Number_of_services = c(input$edit_nos),Model = c(machine_data[which(machine_data$UID==input$choose_uid),"Model"][length(which(machine_data$UID==input$choose_uid))]),
+               Category = c(machine_data[which(machine_data$UID==input$choose_uid),"Category"][length(which(machine_data$UID==input$choose_uid))]),
+               OEM = c(machine_data[which(machine_data$UID==input$choose_uid),"OEM"][length(which(machine_data$UID==input$choose_uid))]),Currency = c("USD"),Make = c(input$edit_make_of_asset1),
+               Type = c("Complete System"), Date = as.character(format(Sys.Date(), format="%m/%d/%Y")),
+               Retail_Price = c(round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model==(machine_data[which(machine_data$UID==input$choose_uid),"Model"][length(which(machine_data$UID==input$choose_uid))])),"PriceConvertedUSD"]))))),
+               Condition = c(input$edit_condition1))
+  })
+  
+  observeEvent(input$edit_submit, {
+    edit_asset_row <- rbind(metaTable,dataReactive1())
+    write.csv(edit_asset_row,"mockdata.csv",row.names = F,na = "")
+    js$reset()
+  })
+  
   output$mytable <- renderDataTable(
     showTable <- select(metaTable,OEM,Category,Model), rownames = F,server = T, selection = "single")
-    # pageLength = 5),
-    # callback = "function(table) {
-    # table.on('click.dt', 'tr', function() {
-    # $(this).toggleClass('selected');
-    # Shiny.onInputChange('rows',
-    # table.rows('.selected').indexes().toArray());
-    # });}"
   
   output$info_table <- renderDataTable({
     s = input$mytable_rows_selected
@@ -28,13 +76,13 @@ shinyServer(function(input,output,session){
     machine_data[machine_data$UID %in% car_fax, ]})
 
   
-  observeEvent(input$edit, {
+  observeEvent(input$add, {
     show("purchase_price")
     show("service")
     show("city")
     show("state")
-    show("pwl")
-    show("thickness")
+    show("condition")
+    show("make_of_asset")
     show("submit")
     show("price")
   })
@@ -44,11 +92,11 @@ shinyServer(function(input,output,session){
     valueBox(max(as.numeric(gsub("Asset","",machine_data$UID,ignore.case=T))), "Total Assets", icon = icon("list"), color = "blue")
   })
   output$totalValue <- renderValueBox({
-    valueBox(paste0("$",format(sum(metaTable$Retail_Price, na.rm=TRUE), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
+    valueBox(paste0("$",format(sum(machine_data$Retail_Price, na.rm=TRUE), big.mark = ",")),"Total Value of Assets",icon = icon("dollar"),color = "yellow")
   })
   
   output$averageValue <- renderValueBox({
-    valueBox(paste0("$",format(floor(sum(metaTable$Retail_Price, na.rm=TRUE)/length(metaTable$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
+    valueBox(paste0("$",format(floor(sum(machine_data$Retail_Price, na.rm=TRUE)/length(machine_data$Model)), big.mark = ",")),"Average Value of Assets",icon = icon("dollar"),color = "green")
   })
   
   output$oemplot <- renderPlot({
@@ -73,11 +121,12 @@ shinyServer(function(input,output,session){
   })
   
   dataReactive <- reactive({
-    data.frame(UID = c(paste0("Asset",length(unique(metaTable$UID))+1)),Year_Installed = c(2018) ,City = c(input$city),State = c(input$state),zip = c(91105),Purchase_Price = c(input$purchase_price),
-               Number_of_services = c(input$service),Model = c(input$name),Type = c(input$machine_type),
-               OEM = c(input$company),Coil_Thickness = c(input$thickness),Patient_Weight_Limit = c(input$pwl),
-               MD5.Hash = c(digest(paste0("Asset",length(unique(metaTable$UID))+1),algo = "md5",serialize = F)),
-               Retail_Price = c(round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model==input$name),"PriceConvertedUSD"]))))))
+    data.frame(UID = c(paste0("Asset",length(unique(metaTable$UID))+1)),YearManufactured = c(2018),City = c(input$city),State = c(input$state),zip = c(91105),Purchase_Price = c(input$purchase_price),
+               Number_of_services = c(input$service),Model = c(input$name),Category = c(input$machine_type),
+               OEM = c(input$company),Currency = c("USD"),Make = c(input$make_of_asset),
+               Type = c("Complete System"), Date = as.character(format(Sys.Date(), format="%m/%d/%Y")),
+               Retail_Price = c(round(mean(na.omit(as.numeric(pricing_info[which(pricing_info$Model==input$name),"PriceConvertedUSD"]))))),
+               Condition = c(input$condition))
   })
   observeEvent(input$price, {
     tableReactive()
@@ -85,7 +134,7 @@ shinyServer(function(input,output,session){
   })
   
   observeEvent(input$submit,{
-    addRow <- rbind(metaTable,dataReactive())
+    addRow <- rbind(machine_data,dataReactive())
     write.csv(addRow,"mockdata.csv",row.names = F,na = "")
     js$reset()
   })
@@ -142,6 +191,19 @@ shinyServer(function(input,output,session){
   output$b.price <- renderText({
     paste("<B>Buyback Price in USD($):</B>",
     format(round(machine_data[input$mytable_rows_selected,c("Retail_Price")]*0.673), big.mark = ","))
+  })
+  
+  output$edit_oem <- renderText({
+    paste("<B>Asset Company:</B>",
+    machine_data[which(machine_data$UID==input$choose_uid),"OEM"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  output$edit_category <- renderText({
+    paste("<B>Asset Category:</B>",
+    machine_data[which(machine_data$UID==input$choose_uid),"Category"][length(which(machine_data$UID==input$choose_uid))])
+  })
+  output$edit_model <- renderText({
+    paste("<B>Asset Model:</B>",
+    machine_data[which(machine_data$UID==input$choose_uid),"Model"][length(which(machine_data$UID==input$choose_uid))])
   })
   
   tableReactive <- reactive({

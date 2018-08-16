@@ -28,7 +28,39 @@ dashboardPage(skin = "blue",
                 box(status = "primary", width = 6, plotOutput("oemplot")),
                 box(status = "success", width = 6, plotlyOutput("allAsset"))
               )),
-      tabItem(tabName = "edit_asset"),
+      tabItem(tabName = "edit_asset",
+              sidebarPanel(
+                selectInput("choose_uid", "Choose Asset to Edit",choices = unique(machine_data$UID), selected = unique(machine_data$UID)[1]),
+                h4(htmlOutput("edit_oem")),
+                h4(htmlOutput("edit_category")),
+                h4(htmlOutput("edit_model")),
+                br(),
+                helpText("Use this to edit the exisiting machines in the Inventory"),
+                actionButton("edit","Edit Features")
+              ),
+              mainPanel(
+                fluidRow(
+                  column(6,
+                  hidden(uiOutput("edit_purchase_price"))),
+                  column(6,
+                  hidden(uiOutput("edit_number_of_service")))
+                ),
+                fluidRow(
+                  column(3,
+                  hidden(uiOutput("edit_city"))),
+                  column(3,
+                  hidden(uiOutput("edit_state"))),
+                  column(3,
+                  hidden(uiOutput("edit_zip")))
+                ),
+                fluidRow(
+                  column(6,
+                  hidden(uiOutput("edit_condition"))),
+                  column(6,
+                  hidden(uiOutput("edit_make_of_asset")))
+                ),
+                hidden(actionButton("edit_submit","Edit Asset in Inventory"))
+              )),
     tabItem(tabName = "add_asset",
             sidebarPanel(
               selectInput("company","Choose OEM",
@@ -40,7 +72,7 @@ dashboardPage(skin = "blue",
               uiOutput("machine_name"),
               dateInput("year","Date of Purchase",format = "yyyy-mm-dd"),
               useShinyjs(),
-              actionButton("edit","Edit Features")
+              actionButton("Add","Add Features")
             ),
             mainPanel(
               uiOutput("ui"),
@@ -54,12 +86,13 @@ dashboardPage(skin = "blue",
                 column(6,
               hidden(textInput("city","Location City",value = machine_data[which(machine_data$Model==value1),"City"][length(machine_data[which(machine_data$Model==value1),"City"])]))),
                 column(6,
-              hidden(selectInput("state","Location State",choices = state.name,selected = state.name[which(state.name==machine_data[which(machine_data$Model==value1),"State"][length(machine_data[which(machine_data$Model==value1),"State"])])])))),
+              hidden(selectInput("state","Location State",choices = state.name,
+                                 selected = state.name[which(state.name==machine_data[which(machine_data$Model==value1),"State"][length(machine_data[which(machine_data$Model==value1),"State"])])])))),
               fluidRow(
                 column(6,
-              hidden(textInput("pwl","Patient Weight Limit (lbs)",value = machine_data[which(machine_data$Model==value1),"Patient_Weight_Limit"]))),
+              hidden(selectInput("condition","Condition of Asset",choices = c("New","Used","Refurbished","Unknown"),selected = "New"))),
                 column(6,
-              hidden(textInput("thickness","Coil Thickness (mm)",value = machine_data[which(machine_data$Model==value1),"Coil_Thickness"])))),
+              hidden(textInput("make_of_asset","Make of Asset",value = machine_data[which(machine_data$Model==value1),"Make"])))),
               extendShinyjs(text = jsResetCode),
               hidden(actionButton("price","Price Analysis")),
              hidden(actionButton("submit","Add to Inventory")),
