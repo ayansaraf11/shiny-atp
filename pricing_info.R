@@ -72,4 +72,3 @@ price.line.plot <- function(input_row){
     theme(panel.background = element_blank(), axis.line = element_blank()) +
     theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 }
-options(warn = -1)
