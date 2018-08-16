@@ -55,15 +55,21 @@ price.line.plot <- function(input_row){
   y <- c(.5, .5, .5, .5)
   labels <- c("Buy-back", "Sale", "Retail", "Purchase")
   avg_df <- data.frame(list_avg, y, labels)
+  avg_name <- paste(machine_data[input_row,c("OEM")], machine_data[input_row,c("Model")])
   ggplot(avg_df, aes(list_avg, y)) +
     geom_point() +
     geom_smooth() +
     xlim((b - (.05 * list_avg_mean)), (p + (.05 * list_avg_mean))) +
     geom_text_repel(aes(label = paste0(labels,": ", "\n", "$", comma(list_avg)), hjust= 1.2, vjust= -2, check_overlap = TRUE)) +
-    scale_x_continuous(labels = point) +
-    labs(x = "Price in USD", y = "") +
+    #scale_x_continuous(labels = point) +
+    #scale_y_continuous(limits = c(0, 1), expand = c(0, 0)) +
+    #coord_cartesian(ylim = c(0,1)) +
+    ggtitle(paste("Pricing in USD for:", avg_name)) +
+    labs(x = NULL, y = NULL) +
     theme(axis.text.x = element_blank()) +
+    theme(axis.title.x = NULL) +
     theme(axis.ticks = element_blank(), axis.text.y = element_blank()) +
-    theme(panel.background = element_blank(), axis.line = element_blank())
+    theme(panel.background = element_blank(), axis.line = element_blank()) +
+    theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 }
 options(warn = -1)

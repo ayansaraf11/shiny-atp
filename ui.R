@@ -84,8 +84,9 @@ dashboardPage(skin = "blue",
               h4(htmlOutput("r.price")),
               h4(htmlOutput("s.price")),
               h4(htmlOutput("b.price"))),
-            column(6,plotOutput("avg_plot", height = "125px", width = "370px"))
-            )
+            absolutePanel(
+              bottom = 145, right = 280, width = 300,
+              draggable = F ,plotOutput("avg_plot", height = "110px", width = "370px")))
             ),
     tabItem("track",
             sidebarPanel(
