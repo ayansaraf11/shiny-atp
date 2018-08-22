@@ -76,7 +76,7 @@ shinyServer(function(input,output,session){
     machine_data[machine_data$UID %in% car_fax, ]})
 
   
-  observeEvent(input$add, {
+  observeEvent(input$Add, {
     show("purchase_price")
     show("service")
     show("city")
@@ -136,6 +136,7 @@ shinyServer(function(input,output,session){
   observeEvent(input$submit,{
     addRow <- rbind(machine_data,dataReactive())
     write.csv(addRow,"mockdata.csv",row.names = F,na = "")
+    machine_data <- addRow
     js$reset()
   })
   
