@@ -45,9 +45,10 @@ price.plot <- function(company,model){
 #                    pricing.for.buyback("GE","Lightspeed Plus")), y = c("retail","average","buyback"), type = 'bar', orientation = 'h')
 
 price.line.plot <- function(input_row){
-  b <- round(machine_data[input_row,c("Retail_Price")]*0.673)
-  s <- round(machine_data[input_row,c("Retail_Price")]*0.823)
+  machine_data <- read.csv("mockdata.csv")
   r <- machine_data[input_row,c("Retail_Price")]
+  b <- round((r * .7))
+  s <- round((r * 0.9) - 34000)
   p <- machine_data[input_row,c("Purchase_Price")]
   point <- format_format(big.mark = ",", decimal.mark = ",", scientific = FALSE)
   list_avg <- c(b, s, r, p)
