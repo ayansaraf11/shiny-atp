@@ -67,6 +67,10 @@ shinyServer(function(input,output,session){
     js$reset()
   })
   
+  observe({
+    updateSelectInput(session, "choose_uid", choices = unique(machine_data$UID), selected =unique(machine_data$UID)[1])
+  })
+  
   output$mytable <- renderDataTable(
     showTable <- select(metaTable,OEM,Category,Model), rownames = F,server = T, selection = "single")
   
