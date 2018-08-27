@@ -117,7 +117,12 @@ dashboardPage(skin = "blue",
               h4(htmlOutput("r.price")),
               h4(htmlOutput("s.price")),
               h4(htmlOutput("b.price")),
+              
+              
+              downloadButton('report', "Generate Asset Report"),
+              br(),
             plotOutput("avg_plot", height = "125px", width = "350px")))
+            
             ),
     tabItem("track",
             sidebarPanel(

@@ -50,6 +50,8 @@ price.line.plot <- function(input_row){
   b <- round((r * .7))
   s <- round((r * 0.9) - 34000)
   p <- machine_data[input_row,c("Purchase_Price")]
+  
+  
   point <- format_format(big.mark = ",", decimal.mark = ",", scientific = FALSE)
   list_avg <- c(b, s, r, p)
   list_avg_mean <- mean(list_avg)
