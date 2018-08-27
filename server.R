@@ -4,7 +4,7 @@ shinyServer(function(input,output,session){
   metaTable <- machine_data
   metaTable$row.names <- NULL
   colnames(machine_data) <- c( "UID","YearManufactured","City","State","zip","Purchase_Price","Number_of_services","Model","Category",
-                               "OEM","Currency","Make","Type", "Date", "Retail_Price","Condition")
+                               "OEM","Currency","Make","Type", "Date", "Retail_Price","Condition", "Buyback_Price", "Sell_Price")
   
   output$machine_name <- renderUI({
     filter.name.bycompany <- filter(metaTable,OEM==input$company)
@@ -65,6 +65,10 @@ shinyServer(function(input,output,session){
     edit_asset_row <- rbind(metaTable,dataReactive1())
     write.csv(edit_asset_row,"mockdata.csv",row.names = F,na = "")
     js$reset()
+  })
+  
+  observe({
+    updateSelectInput(session, "choose_uid", choices = unique(machine_data$UID), selected =unique(machine_data$UID)[1])
   })
   
   output$mytable <- renderDataTable(
@@ -222,4 +226,25 @@ shinyServer(function(input,output,session){
     price.line.plot(input$mytable_rows_selected)
     }
   })
+  
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = "report.pdf",
+    content = function(file) {
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "AssetTrackingReport.Rmd")
+      file.copy("AssetTrackingReport.Rmd", tempReport, overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(data=as.data.frame(machine_data[which(machine_data$UID==input$choose_uid), ]))
+      
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+    })
 })
